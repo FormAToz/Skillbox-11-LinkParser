@@ -8,10 +8,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Queue;
 import java.util.Set;
-import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveAction;
 
 public class LinkParser extends RecursiveAction {
@@ -65,17 +63,12 @@ public class LinkParser extends RecursiveAction {
                         continue;
                     }
 
-                    ArrayList<LinkParser> tmpObj = new ArrayList<>();
-
                     //проверяем, что ссылка содержит имя домена и ее нет в посещенных ссылках
                     if (linkString.contains(Main.getDomain()) & !visitedLinks.contains(linkString)) {
                         queueLinks.add(linkString);
                         LinkParser parser = new LinkParser(queueLinks, visitedLinks);
                         parser.fork();
-                        tmpObj.add(parser);
                     }
-
-                    tmpObj.forEach(ForkJoinTask::join);
                 }
 
             } catch (IOException e) {
